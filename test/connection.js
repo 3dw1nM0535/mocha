@@ -1,11 +1,21 @@
 var mongoose = require('mongoose');
 
-//connect to database
-mongoose.connect('mongodb://localhost/testaroo', { useMongoClient: true });
+//ES6 promise
+mongoose.Promise = global.Promise;
 
-//listen for connection error
-mongoose.connection.once('open', function () {
-  console.log('Connection successfull.');
-}).on('error', function (error) {
-  console.log('Connection error: ', error);
+//hook mongo connection before test runs
+before(function (done) {
+
+  //connect to database
+  mongoose.connect('mongodb://localhost/testaroo', { useMongoClient: true });
+
+  //listen for connection error
+  mongoose.connection.once('open', function () {
+    console.log('Connection successfull.');
+    done();
+  }).on('error', function (error) {
+    console.log('Connection error: ', error);
+  });
+
 });
+
