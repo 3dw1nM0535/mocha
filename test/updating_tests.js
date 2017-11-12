@@ -22,11 +22,15 @@ describe('Update Records in DB', function () {
   //create it block tests run
   it ('Updating a record in the db', function (done) {
     MarioChar.findOneAndUpdate({name: 'Brian Scotch'}, {name: 'Boss Budgy'}).then(function () {
-      MarioChar.findOne({_id: char._id}, function (record) {
+      MarioChar.findOne({_id: char._id}, function (err, record) {
+        if (err) {
+          throw err;
+        }
+
         assert(record.name === 'Boss Budgy');
-        doone();
-      })
-    })
+        done();
+      });
+    });
   });
 
 
